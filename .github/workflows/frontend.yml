@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - dev
+  workflow_dispatch:
 
 env:
   DOCKER_REPO: devopsapps
@@ -26,10 +27,9 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-        run:
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:latest -f ./frontend
+        run: |
+            docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:latest ./frontend
 
-      -name: Push Docker image
-      run: |
-        docker push ${{ secrets.DOCKER_USERNAME}}/${{env.DOCKER_REPO}}:latest
-
+      - name: Push Docker image
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:latest
